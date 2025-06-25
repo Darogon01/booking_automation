@@ -37,14 +37,15 @@ The test script performs the following steps:
 
 ## ⚙️ Steps to Install and Run the Tests
 
-### ![Icono personalizado](https://github.com/Darogon01/booking_automation/assets/image/clone.png) 1. Clone the repository
+
+### 🧬  1. Clone the repository
 
 ```bash
 git clone https://github.com/your-username/booking-automation.git
 cd booking-automation
 ```
 
-### 📦 Install dependencies:
+### 📦 2. Install dependencies:
 
 ```bash
 npm install
@@ -56,7 +57,7 @@ npm install
 npx playwright test
 ```
 
-📊 4. Show the report (optional)
+### 📊 4. Show the report (optional)
 
 ```bash
 npx playwright show-report
