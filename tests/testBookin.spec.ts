@@ -10,9 +10,9 @@ test("Serch home in a Coruna", async ({ page }) => {
   // Fill in the destination and press Enter 
   await page.locator('input[name="ss"]').fill('A Coruña');
   await page.waitForTimeout(2000); // autosuggest
-  const pressEnter = await page.keyboard.press('Enter');
-  // pressEnter
-  // console.log(pressEnter)
+  const pressEnter = await page.keyboard.press('Enter');await page.locator('body').click();
+
+  console.log(pressEnter)
 
 });
 
