@@ -31,3 +31,8 @@ export const selectAvailableCheckInDate = async (page: Page): Promise<{ checkIn:
 
   return { checkIn, checkOut };
 };
+
+export const logConsoleResults = (label: string, data: string | number | string[]) => {
+  const output = Array.isArray(data) ? data.join('\n') : data;
+  console.log(`📌 ${label}:`, output)
+}
