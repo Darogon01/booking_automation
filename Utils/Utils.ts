@@ -11,7 +11,7 @@ export const selectAvailableCheckInDate = async (page: Page): Promise<{ checkIn:
   let checkIn = formatDate(currentYear, currentMonth, 1);
   let checkOut = formatDate(currentYear, currentMonth, 7);
 
-  // Comprobar si la fecha está visible
+  // Check if the date is visible
   const isCheckInVisible = await page.locator(`span[data-date="${checkIn}"]`).isVisible();
 
   if (!isCheckInVisible) {
@@ -22,7 +22,7 @@ export const selectAvailableCheckInDate = async (page: Page): Promise<{ checkIn:
     checkOut = formatDate(nextYear, nextMonth, 7);
   }
 
-  // Seleccionar fechas visibles
+  // Select visible dates
   await expect(page.locator(`span[data-date="${checkIn}"]`)).toBeVisible();
   await page.click(`span[data-date="${checkIn}"]`);
 
@@ -46,12 +46,12 @@ export const checkLoginGoogle = async (page: Page) => {
     try {
       await closeButton.waitFor({ state: 'visible', timeout: 5000 });
       await closeButton.click();
-      //  Esperamos que el modal desaparezca realmente
+      // Wait for the modal to actually disappear
       await popUpLocator.waitFor({ state: 'hidden', timeout: 5000 });
       console.log('✅ Google popup successfully closed.');
     } catch (error) {
       console.error('❌ Failed to close Google popup:', error);
-      throw error; // Detiene el test si no lo cierra
+      throw error; // Stop the test if it cannot be closed
     }
   }
   else{
