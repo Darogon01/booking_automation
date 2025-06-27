@@ -36,3 +36,25 @@ export const logConsoleResults = (label: string, data: string | number | string[
   const output = Array.isArray(data) ? data.join('\n') : data;
   console.log(`📌 ${label}:`, output)
 }
+
+export const checkLoginGoogle = async (page: Page) => {
+  const popUpLocator = page.locator('.haAclf.WsjYwc-haAclf')
+  const isVisible = await popUpLocator.isVisible().catch(() => false)
+  if (isVisible) {
+   console.log('🔒 Google login popup detected, closing it...'); 
+   const closeButton = page.locator('[id="close"][role="button"][aria-label="Cerrar"]')
+    try {
+      await closeButton.waitFor({ state: 'visible', timeout: 5000 });
+      await closeButton.click();
+      //  Esperamos que el modal desaparezca realmente
+      await popUpLocator.waitFor({ state: 'hidden', timeout: 5000 });
+      console.log('✅ Google popup successfully closed.');
+    } catch (error) {
+      console.error('❌ Failed to close Google popup:', error);
+      throw error; // Detiene el test si no lo cierra
+    }
+  }
+  else{
+    console.log('✅ No Google login popup detected, continuing...');
+  }
+}
