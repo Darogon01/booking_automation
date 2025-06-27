@@ -1,4 +1,4 @@
-# 🧪 Booking Automation Test with Playwright
+# 🤖⚙️ Booking Automation Test with Playwright
 
 This project is an automated test challenge designed to validate key functionalities of the Booking.com website using **Playwright** and **TypeScript**.
 
@@ -10,7 +10,7 @@ The goal of this challenge is to demonstrate automation skills by simulating a r
 
 ---
 
-## 🧪 Task Overview
+## 📋 Task Overview
 
 The test script performs the following steps:
 
