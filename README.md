@@ -63,5 +63,40 @@ npx playwright test
 npx playwright show-report
 ```
 
+## ❗ If Your Test Fails in Firefox Due to Google Login Popup, Try This
+
+If your Playwright test is failing in **Firefox** and you're seeing a **Google One Tap login popup** overlaying the page — you're not alone.
+
+> Google doesn't like to be automated and often blocks or interferes with automation tools.  
+> _“Closing since this is not a Playwright issue then.”_
+
+This is not a bug in Playwright — it's intentional behavior by Google to avoid automated logins.
+
+---
+
+### ✅ Recommended Fix: Disable Federated Login via `about:config` in Firefox
+
+Firefox allows you to block federated login prompts like Google One Tap at a lower level through advanced settings:
+
+1. Open Firefox and go to:  about:config
+
+
+2. In the search bar, type:  identity.fxaccounts.enabled
+
+
+3. When the setting appears, click the **toggle button** to set its value to `false`.
+
+This disables Firefox’s internal support for federated identity providers, including Google login overlays.
+
+---
+
+### 🔍 Why This Matters
+
+- Google One Tap injects a cross-origin iframe automatically.
+- Interacting with it in tests is often unreliable or blocked entirely.
+- Disabling federated login ensures your test environment stays clean and consistent.
+- Especially useful in headless/CI environments where manual blocking isn’t possible.
+
+---
 
 
