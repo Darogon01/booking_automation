@@ -1,4 +1,4 @@
-import { Page, expect } from '@playwright/test';
+import { Page, expect, Frame } from '@playwright/test';
 
 export const formatDate = (year: number, month: number, day: number): string =>
   `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
@@ -37,24 +37,47 @@ export const logConsoleResults = (label: string, data: string | number | string[
   console.log(`📌 ${label}:`, output)
 }
 
-export const checkLoginGoogle = async (page: Page) => {
-  const popUpLocator = page.locator('.haAclf.WsjYwc-haAclf')
-  const isVisible = await popUpLocator.isVisible().catch(() => false)
-  if (isVisible) {
-   console.log('🔒 Google login popup detected, closing it...'); 
-   const closeButton = page.locator('[id="close"][role="button"][aria-label="Cerrar"]')
-    try {
-      await closeButton.waitFor({ state: 'visible', timeout: 5000 });
-      await closeButton.click();
-      // Wait for the modal to actually disappear
-      await popUpLocator.waitFor({ state: 'hidden', timeout: 5000 });
-      console.log('✅ Google popup successfully closed.');
-    } catch (error) {
-      console.error('❌ Failed to close Google popup:', error);
-      throw error; // Stop the test if it cannot be closed
+// docs param
+/**
+ * Cierra el diálogo de inicio de sesión con Google (One Tap).
+ * - Intenta hacer clic en el botón de cerrar dentro del iframe.
+ * - Si no encuentra el botón, oculta el iframe desde el DOM principal.
+ *
+ * @param page Instancia de Playwright Page
+ */
+export async function checkLoginGoogle(page: Page): Promise<void> {
+  try {
+    // Espera a que aparezca el iframe de Google One Tap
+    const iframeHandle = await page.waitForSelector(
+      'iframe[src*="accounts.google.com/gsi/iframe/select"]',
+      { timeout: 5000 }
+    );
+
+    const frame: Frame | null = await iframeHandle.contentFrame();
+
+    if (frame) {
+      // Intenta hacer clic en el botón "X" (cerrar)
+      const closeBtn = await frame.$('button[aria-label="Cerrar"]');
+
+      if (closeBtn) {
+        await closeBtn.click();
+        console.log('Popup de Google cerrado con botón.');
+        return;
+      }
     }
-  }
-  else{
-    console.log('✅ No Google login popup detected, continuing...');
+
+    // Si no se encontró botón o iframe no accesible, ocultar iframe manualmente
+    await page.evaluate(() => {
+      const iframe = document.querySelector(
+        'iframe[src*="accounts.google.com/gsi/iframe/select"]'
+      );
+      if (iframe?.parentElement) {
+        iframe.parentElement.style.display = 'none';
+      }
+    });
+
+    console.log('Popup de Google ocultado desde el DOM.');
+  } catch (error) {
+    console.warn('No se encontró el popup de Google o ya estaba cerrado.');
   }
 }

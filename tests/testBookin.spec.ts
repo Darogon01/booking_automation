@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { selectAvailableCheckInDate } from '../Utils/Utils'
 import { logConsoleResults } from '../Utils/Utils';
-// import { checkLoginGoogle } from "../Utils/Utils";
+ import { checkLoginGoogle } from "../Utils/Utils";
 
 test("Serch home in a Coruna", async ({ page }) => {
   await page.goto("https://www.booking.com");
@@ -9,7 +9,7 @@ test("Serch home in a Coruna", async ({ page }) => {
 
   // Check Google login
   // await checkLoginGoogle(page) [DOES NOT close the login modal and the behavior is incorrect in FireFox]
-
+  await checkLoginGoogle(page)
   // Expect a title "to contain" a substring.
   await expect(page).toHaveTitle(
     "Booking.com | Official site | The best hotels, flights, car rentals & accommodations");
@@ -23,7 +23,7 @@ test("Serch home in a Coruna", async ({ page }) => {
 
   // Selección de fechas (check-in y check-out)
   const { checkIn, checkOut } = await selectAvailableCheckInDate(page);
-
+await checkLoginGoogle(page)
    // Show selected dates in console
   logConsoleResults('Check-in', checkIn);
   logConsoleResults('Check-out', checkOut);
